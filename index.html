@@ -1,99 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>web and database project</title>
+  <meta charset="UTF-8">
+  <title>auth page</title>
 
-    <style>
-        body {
-            background-color: #232F3E;
-        }
-        label, button {
-            color: #FF9900;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            margin-left: 40px;
-        }
-        input {
-            color: #232F3E;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            margin-left: 20px;
-        }
-        </style>
-
-    <script>
-        var imgProcess = (image_url, filter)=>{
-            // сборка запроса
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"url": image_url, "type": filter});
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-
-            // отправка запроса
-            fetch("https://h9kwqa8kce.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
-            .then(response => response.text())
-            .then(result => { 
-                // скачивание обработанной картинки
-                var a = document.createElement('a');
-                a.href = JSON.parse(result).body;
-                a.setAttribute("download", a.href.slice(-11));
-                a.click();
-            })
-        }  
-    </script>
-
-    <script>
-        var getOrigin = (image_id)=>{
-            // сборка запроса
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"image_id": image_id});
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-
-            // отправка запроса
-            fetch("https://xwwogbpbtk.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
-            .then(response => response.text())
-            .then(result => { 
-                // скачивание оригинал
-                var a = document.createElement('a');
-                a.href = JSON.parse(result).body;
-                a.setAttribute("download", image_id + "source.jpg");
-                a.click();
-            })
-        }  
-    </script>
-  
-  
-  
+  <style>
+      body {
+          background-color: #7ca1d1;
+      }
+      form {
+          margin-left: 100px;
+          margin-top: 200px;
+      }
+  </style>
 </head>
 <body>
     <form>
-        
-        <label> URL of the image :</label>
-        <input type="text" id="image_url">
-
-        <select id="filter">
-        <option value="BLUR"> blur </option>
-        <option value="SHARPEN"> sharpen </option>
-        <option value="EMBOSS"> emboss </option>
-        </select>
-
-        <button type="button" onclick="imgProcess(document.getElementById('image_url').value, document.getElementById('filter').value)"> process jpg </button>
-
-        <label> get source image by id (7 letters in file name):</label>
-        <input type="text" id="image_id">
-        <button type="button" onclick="getOrigin(document.getElementById('image_id').value)"> get image </button>
+      <a href="https://image-project.auth.us-east-1.amazoncognito.com/login?client_id=6pem46oc22tvgpqbsbi0v2q5ka&response_type=code&scope=email+openid&redirect_uri=https://aws-project-badmaev.s3.amazonaws.com/login.html">Login</a> 
     </form>
 </body>
 </html>
