@@ -10,43 +10,68 @@ from string import ascii_lowercase
 from PIL import Image
 from PIL import ImageFilter
 
+#find item in table and return if exists
+def get_img_item(table, url, type):
+    response = table.get_item(
+      Key = {
+         'url': url,
+         'filter': type
+      }
+    )
+    if 'Item' in response:
+      return response['Item']
+    else:
+      return None
 
-def lambda_handler(event, context):
-    #get image
-    url = event['url']
-    type = event['type']
-    urllib.request.urlretrieve(url, "/tmp/img.jpg")
-    
-    #process image
+#process image 
+def process_img(type):
     image = Image.open('/tmp/img.jpg')
     if type == 'BLUR':
-        processed = image.filter(ImageFilter.BLUR)
+      processed = image.filter(ImageFilter.BLUR)
     elif type == 'SHARPEN':
-        processed = image.filter(ImageFilter.SHARPEN)
+      processed = image.filter(ImageFilter.SHARPEN)
     elif type == 'EMBOSS':
-        processed = image.filter(ImageFilter.EMBOSS)
-   
+      processed = image.filter(ImageFilter.EMBOSS)
     processed.save("/tmp/processed.jpg")
-    new_file = open("/tmp/processed.jpg", "rb")
-    
-    #upload image to bucket
+  
+#upload to s3 bucket
+def upload_s3():
+    processed_file = open("/tmp/processed.jpg", "rb")
     s3 = boto3.client('s3')
-    fileobj = BytesIO(new_file.read())
+    fileobj = BytesIO(processed_file.read())
     
-    #generate filename
     key = ''.join(choice(ascii_lowercase) for i in range(7))
-    file_name = 'images/'+ key + '.jpg'
+    file_name = 'images/'+ key + '.jpg'   #generate filename
     s3.upload_fileobj(fileobj, 'aws-project-badmaev', file_name, ExtraArgs={'ACL': 'public-read'})
+    return key
+  
+def lambda_handler(event, context):
+    #url of source and type of filter
+    url = event['url']
+    type = event['type']
     
+    #init dynamodb table
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('img_table')
-    response = table.put_item(
+    
+    item = get_img_item(table, url, type)
+    
+    # if such item not found in table, proccess image, upload image to s3, put new item into table
+    if (item == None):
+      urllib.request.urlretrieve(url, "/tmp/img.jpg") #get source img by url
+      process_img(type)
+      img_id = upload_s3()
+      response = table.put_item(
         Item={
-            'img_id': key,
-            'origin_url': url,
-            'type': type
+            'url': url,
+            'filter': type,
+            'img_id': img_id
         })
+    # if found immeadiatly get img_id for already existing image in s3 bucket
+    else:
+      img_id = item['img_id']
+
     return {
-      "statusCode": 200,
-      "body": file_name,
-    }
+        "statusCode": 200,
+        "body": 'images/' + img_id + '.jpg'
+      }

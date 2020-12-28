@@ -40,32 +40,6 @@
         }  
     </script>
 
-    <script>
-        var getOrigin = (image_id)=>{
-            // сборка запроса
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"image_id": image_id});
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-
-            // отправка запроса
-            fetch("https://xwwogbpbtk.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
-            .then(response => response.text())
-            .then(result => { 
-                // скачивание оригинала
-                var a = document.createElement('a');
-                a.href = JSON.parse(result).body;
-                a.setAttribute("download", image_id + "source.jpg");
-                a.click();
-            })
-        }  
-    </script>
-  
 </head>
 <body>
     
@@ -82,10 +56,6 @@
 
         <button type="button" onclick="imgProcess(document.getElementById('image_url').value, document.getElementById('filter').value)"> process </button>
     </form>
-    <form>
-        <label>get source image by id:</label>
-        <input type="text" id="image_id">
-        <button type="button" onclick="getOrigin(document.getElementById('image_id').value)"> get image </button>
-    </form>
+   
 </body>
 </html>
