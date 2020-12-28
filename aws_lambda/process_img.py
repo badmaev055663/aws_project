@@ -32,6 +32,10 @@ def process_img(type):
       processed = image.filter(ImageFilter.SHARPEN)
     elif type == 'EMBOSS':
       processed = image.filter(ImageFilter.EMBOSS)
+    elif type == 'DETAIL':
+      processed = image.filter(ImageFilter.DETAIL)
+    elif type == 'SMOOTH':
+      processed = image.filter(ImageFilter.SMOOTH)
     processed.save("/tmp/processed.jpg")
   
 #upload to s3 bucket
