@@ -1,22 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>auth page</title>
+    <meta charset="UTF-8">
+    <title>web and database project</title>
 
-  <style>
-      body {
+    <style>
+        body {
           background-color: #7ca1d1;
-      }
-      form {
-          margin-left: 100px;
-          margin-top: 200px;
-      }
-  </style>
+        }
+        label, button, select {
+            margin-left: 20px;
+            margin-top: 80px;
+        }
+        td {
+            border: 5px solid #000;
+            padding: 5px
+        }
+    </style>
+
+    <script>
+        var imgProcess = (image_url, filter)=>{
+            // сборка запроса
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify({"url": image_url, "type": filter});
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            // отправка запроса
+            fetch("https://8zkgi8tu20.execute-api.us-east-1.amazonaws.com/stage1", requestOptions)
+            .then(response => response.text())
+            .then(result => { 
+                // скачивание картинки   
+                var a = document.createElement('a');
+                a.href = JSON.parse(result).body;
+                a.setAttribute("download", a.href.slice(-11));
+                a.click();   
+            })
+        }  
+    </script>
+
+    <script>
+        var select_by_date = (count)=>{
+            // сборка запроса
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify({"count": count});
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+    
+            // отправка запроса
+            fetch("https://1u9wwe0mb4.execute-api.us-east-1.amazonaws.com/stage1", requestOptions)
+            .then(response => response.text())
+            .then(result => { 
+                // отобразить результат  
+                var data = JSON.parse(result).body;
+                var rows = data.length;
+                var table = document.createElement('table');
+                
+                document.write('<div className="table1"><table className="table">');
+                for (var i = 0; i < rows; i++) {
+                    var url = data[i].url;
+                    var date = data[i].upload_time;
+                    var type = data[i].type;
+                    document.write('<tr className="mess-hide"><td className="url">'+ url +'</td><td className="date">'+ date +'</td><td className="type">'+ type +'</td></tr>');
+                }  
+                document.write('</table></div>');  
+            })
+        }  
+    </script>
+
 </head>
 <body>
     <form>
-      <a href="https://image-project.auth.us-east-1.amazoncognito.com/login?client_id=6pem46oc22tvgpqbsbi0v2q5ka&response_type=code&scope=email+openid&redirect_uri=https://aws-project-badmaev.s3.amazonaws.com/login.html">Login</a> 
+        <label>URL of the image:</label>
+        <input type="url" id="image_url">
+
+        <label>filter type:</label>
+        <select id="filter">
+        <option value="BLUR"> blur </option>
+        <option value="SHARPEN"> sharpen </option>
+        <option value="EMBOSS"> emboss </option>
+        <option value="SMOOTH"> smooth </option>
+        <option value="DETAIL"> detail </option>
+        </select>
+
+        <button type="button" onclick="imgProcess(document.getElementById('image_url').value, document.getElementById('filter').value)"> process </button>
     </form>
+
+
+    <form>
+        <label>show for the last:</label>
+        <select id="day_count">
+        <option value="1"> day </option>
+        <option value="3"> 3 days </option>
+        <option value="7"> week </option>
+        </select>
+
+        <button type="button" onclick="select_by_date(document.getElementById('day_count').value)"> show </button>
+    </form>
+   
 </body>
 </html>

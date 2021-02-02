@@ -2,6 +2,7 @@
 import json
 import urllib.request
 import boto3
+from time import gmtime, strftime
 from io import BytesIO
 from random import choice
 from string import ascii_lowercase
@@ -15,7 +16,7 @@ def get_img_item(table, url, type):
     response = table.get_item(
       Key = {
          'url': url,
-         'filter': type
+         'type': type
       }
     )
     if 'Item' in response:
@@ -40,13 +41,14 @@ def process_img(type):
   
 #upload to s3 bucket
 def upload_s3():
+    
     processed_file = open("/tmp/processed.jpg", "rb")
     s3 = boto3.client('s3')
     fileobj = BytesIO(processed_file.read())
     
     key = ''.join(choice(ascii_lowercase) for i in range(7))
     file_name = 'images/'+ key + '.jpg'   #generate filename
-    s3.upload_fileobj(fileobj, 'aws-project-badmaev', file_name, ExtraArgs={'ACL': 'public-read'})
+    s3.upload_fileobj(fileobj, 'img-process-project', file_name, ExtraArgs={'ACL': 'public-read'})
     return key
   
 def lambda_handler(event, context):
@@ -65,11 +67,13 @@ def lambda_handler(event, context):
       urllib.request.urlretrieve(url, "/tmp/img.jpg") #get source img by url
       process_img(type)
       img_id = upload_s3()
+      now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
       response = table.put_item(
         Item={
             'url': url,
-            'filter': type,
-            'img_id': img_id
+            'type': type,
+            'img_id': img_id,
+            'upload_time': now
         })
     # if found immeadiatly get img_id for already existing image in s3 bucket
     else:
