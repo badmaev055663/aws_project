@@ -2,7 +2,8 @@
 import json
 import urllib.request
 import boto3
-from time import gmtime, strftime
+import os.path
+from datetime import datetime, date, time
 from io import BytesIO
 from random import choice
 from string import ascii_lowercase
@@ -67,13 +68,15 @@ def lambda_handler(event, context):
       urllib.request.urlretrieve(url, "/tmp/img.jpg") #get source img by url
       process_img(type)
       img_id = upload_s3()
-      now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+      now = datetime.now()
+      size = os.path.getsize("/tmp/processed.jpg") // 1024
       response = table.put_item(
         Item={
             'url': url,
             'type': type,
             'img_id': img_id,
-            'upload_time': now
+            'upload_time': now.strftime("%Y-%m-%d, %H:%M"),
+            'size': size
         })
     # if found immeadiatly get img_id for already existing image in s3 bucket
     else:
