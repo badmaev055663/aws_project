@@ -1,9 +1,9 @@
-function select_by_date(count)
+function select_by_size(min, max)
 {
     // сборка запроса
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({"count": count});
+    var raw = JSON.stringify({"min": min, "max": max});
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -12,7 +12,7 @@ function select_by_date(count)
     };
 
     // отправка запроса
-    fetch("https://1u9wwe0mb4.execute-api.us-east-1.amazonaws.com/stage1", requestOptions)
+    fetch("https://g54xj7ebl8.execute-api.us-east-1.amazonaws.com/stage1", requestOptions)
     .then(response => response.text())
     .then(result => { 
         // отобразить результат  
@@ -24,8 +24,8 @@ function select_by_date(count)
         for (var i = 0; i < rows; i++) {
             var url = data[i].url;
             var type = data[i].type;
-            var date = data[i].upload_time;
-            document.write('<tr className="mess-hide"><td className="url">'+ url +'</td><td className="type">'+ type +'</td><td className="date">'+ date +'</td></tr>');
+            var size = data[i].size;
+            document.write('<tr className="mess-hide"><td className="url">'+ url +'</td><td className="type">'+ type +'</td><td className="size (KiB)">'+ size + '</td></tr>');
         }  
         document.write('</table></div>');  
     })

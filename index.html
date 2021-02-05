@@ -10,7 +10,6 @@
         }
         label, button, select {
             margin-left: 20px;
-            margin-top: 80px;
         }
         td {
             border: 10px solid #000;
@@ -21,10 +20,10 @@
 </head>
 <body>
     <form>
-        <label>URL of the image:</label>
+        <label for="image_url">URL of the image:</label>
         <input type="url" id="image_url">
 
-        <label>filter type:</label>
+        <label for="filter">filter type:</label>
         <select id="filter">
         <option value="BLUR"> blur </option>
         <option value="SHARPEN"> sharpen </option>
@@ -48,8 +47,22 @@
         <button type="button" onclick="select_by_date(document.getElementById('day_count').value)"> show </button>
     </form>
 
+    
+    <form>
+        <label>show files with size in range:</label>
+
+        <label for="min_size">lower bound:</label>
+        <input type="number" id="min_size" name="min_size" value="0" min="0" max="100000">
+
+        <label for="max_size">upper bound:</label>
+        <input type="number" id="max_size" name="max_size" value="100000" min="50" max="100000">
+
+        <button type="button" onclick="select_by_size(document.getElementById('min_size').value, document.getElementById('max_size').value)"> show </button>
+    </form>
+
     <script src="script/img_process.js"></script>
     <script src="script/select_by_date.js"></script>
+    <script src="script/select_by_size.js"></script>
    
 </body>
 </html>
