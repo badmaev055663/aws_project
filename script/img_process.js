@@ -15,9 +15,16 @@ function img_process(image_url, filter)
     fetch("https://8zkgi8tu20.execute-api.us-east-1.amazonaws.com/stage1", requestOptions)
     .then(response => response.text())
     .then(result => { 
-        // скачивание картинки   
         var a = document.createElement('a');
-        a.href = JSON.parse(result).body;
+        var data = JSON.parse(result).body;
+     
+        if (data == 'url error')
+        {
+            alert('invalid url');
+            return;
+        }
+        a.href = data;
+        // скачивание картинки
         a.setAttribute("download", a.href.slice(-11));
         a.click();   
     })

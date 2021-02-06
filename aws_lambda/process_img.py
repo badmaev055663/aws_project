@@ -1,6 +1,6 @@
 #built-in libraries
 import json
-import urllib.request
+import urllib.request, urllib.error
 import boto3
 import os.path
 from datetime import datetime, date, time
@@ -65,7 +65,13 @@ def lambda_handler(event, context):
     
     # if such item not found in table, proccess image, upload image to s3, put new item into table
     if (item == None):
-      urllib.request.urlretrieve(url, "/tmp/img.jpg") #get source img by url
+      try:
+        urllib.request.urlretrieve(url, "/tmp/img.jpg") #get source img by url
+      except urllib.error.URLError:
+        return {
+          "statusCode": 200,
+          "body": 'url error'
+        }
       process_img(type)
       img_id = upload_s3()
       now = datetime.now()

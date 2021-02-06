@@ -17,6 +17,11 @@ function select_by_date(count)
     .then(result => { 
         // отобразить результат  
         var data = JSON.parse(result).body;
+        if (data == 'None')
+        {
+            alert('such records not found');
+            return;
+        }
         var rows = data.length;
         var table = document.createElement('table');
         

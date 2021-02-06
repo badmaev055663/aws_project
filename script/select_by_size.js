@@ -1,5 +1,10 @@
 function select_by_size(min, max)
 {
+    if (Number.parseInt(min) >= Number.parseInt(max))
+    {
+        alert('upper bound is less than lower');
+        return;
+    }
     // сборка запроса
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -17,6 +22,11 @@ function select_by_size(min, max)
     .then(result => { 
         // отобразить результат  
         var data = JSON.parse(result).body;
+        if (data == 'None')
+        {
+            alert('such records not found');
+            return;
+        }
         var rows = data.length;
         var table = document.createElement('table');
         
