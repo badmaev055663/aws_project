@@ -1,8 +1,15 @@
 function select_by_size(min, max)
 {
-    if (Number.parseInt(min) >= Number.parseInt(max))
+    min_int = Number.parseInt(min);
+    max_int = Number.parseInt(max);
+    if (min_int >= max_int)
     {
         alert('upper bound is less than lower');
+        return;
+    }
+    if (min_int < 0)
+    {
+        alert('bounds cannot be negative');
         return;
     }
     // сборка запроса

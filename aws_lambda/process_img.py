@@ -27,7 +27,10 @@ def get_img_item(table, url, type):
 
 #process image 
 def process_img(type):
-    image = Image.open('/tmp/img.jpg')
+    try:
+      image = Image.open('/tmp/img.jpg')
+    except IOError:
+      return False
     if type == 'BLUR':
       processed = image.filter(ImageFilter.BLUR)
     elif type == 'SHARPEN':
@@ -39,6 +42,7 @@ def process_img(type):
     elif type == 'SMOOTH':
       processed = image.filter(ImageFilter.SMOOTH)
     processed.save("/tmp/processed.jpg")
+    return True
   
 #upload to s3 bucket
 def upload_s3():
@@ -67,12 +71,16 @@ def lambda_handler(event, context):
     if (item == None):
       try:
         urllib.request.urlretrieve(url, "/tmp/img.jpg") #get source img by url
-      except urllib.error.URLError:
+      except:
         return {
           "statusCode": 200,
           "body": 'url error'
         }
-      process_img(type)
+      if (process_img(type) == False):
+        return {
+          "statusCode": 200,
+          "body": 'image error'
+        }
       img_id = upload_s3()
       now = datetime.now()
       size = os.path.getsize("/tmp/processed.jpg") // 1024

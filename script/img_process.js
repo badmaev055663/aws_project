@@ -23,6 +23,11 @@ function img_process(image_url, filter)
             alert('invalid url');
             return;
         }
+        if (data == 'image error')
+        {
+            alert('not url of an image (jpeg)');
+            return;
+        }
         a.href = data;
         // скачивание картинки
         a.setAttribute("download", a.href.slice(-11));
