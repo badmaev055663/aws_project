@@ -35,15 +35,14 @@ function select_by_size(min, max)
             return;
         }
         var rows = data.length;
-        var table = document.createElement('table');
-        
-        document.write('<div className="table1"><table className="table">');
+        document.createElement('table');
+        document.write('<table>');
         for (var i = 0; i < rows; i++) {
             var url = data[i].url;
             var type = data[i].type;
             var size = data[i].size;
-            document.write('<tr className="mess-hide"><td className="url">'+ url +'</td><td className="type">'+ type +'</td><td className="size (KiB)">'+ size + '</td></tr>');
+            document.write('<tr><td>'+ url +'</td><td>'+ type +'</td><td>'+ size + '</td></tr>');
         }  
-        document.write('</table></div>');  
+        document.write('</table>');  
     })
 }  

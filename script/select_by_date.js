@@ -23,15 +23,14 @@ function select_by_date(count)
             return;
         }
         var rows = data.length;
-        var table = document.createElement('table');
-        
-        document.write('<div className="table1"><table className="table">');
+        document.createElement('table');
+        document.write('<table>');
         for (var i = 0; i < rows; i++) {
             var url = data[i].url;
             var type = data[i].type;
             var date = data[i].upload_time;
-            document.write('<tr className="mess-hide"><td className="url">'+ url +'</td><td className="type">'+ type +'</td><td className="date">'+ date +'</td></tr>');
+            document.write('<tr><td>'+ url +'</td><td>'+ type +'</td><td>'+ date +'</td></tr>');
         }  
-        document.write('</table></div>');  
+        document.write('</table>');  
     })
 }  
