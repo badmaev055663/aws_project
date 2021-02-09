@@ -24,12 +24,12 @@ function select_by_date(count)
         }
         var rows = data.length;
         document.createElement('table');
-        document.write('<table>');
+        document.write('<table style="border: 2px solid black;">');
         for (var i = 0; i < rows; i++) {
             var url = data[i].url;
             var type = data[i].type;
             var date = data[i].upload_time;
-            document.write('<tr><td>'+ url +'</td><td>'+ type +'</td><td>'+ date +'</td></tr>');
+            document.write('<tr style="border: 1px solid black;"><td style="border: 1px solid black;">'+ url +'</td><td style="border: 1px solid black;">'+ type +'</td><td style="border: 1px solid black;">'+ date +'</td></tr>');
         }  
         document.write('</table>');  
     })

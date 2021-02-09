@@ -36,12 +36,13 @@ function select_by_size(min, max)
         }
         var rows = data.length;
         document.createElement('table');
-        document.write('<table>');
+      
+        document.write('<table style="border: 2px solid black;">');
         for (var i = 0; i < rows; i++) {
             var url = data[i].url;
             var type = data[i].type;
             var size = data[i].size;
-            document.write('<tr><td>'+ url +'</td><td>'+ type +'</td><td>'+ size + '</td></tr>');
+            document.write('<tr style="border: 1px solid black;"><td style="border: 1px solid black;">'+ url +'</td><td style="border: 1px solid black;">'+ type +'</td><td style="border: 1px solid black;">'+ size + '</td></tr>');
         }  
         document.write('</table>');  
     })
