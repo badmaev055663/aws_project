@@ -37,7 +37,7 @@ function select_by_size(min, max)
         var rows = data.length;
         document.createElement('table');
       
-        document.write('<table style="border: 2px solid black;">');
+        document.write('<table>');
         for (var i = 0; i < rows; i++) {
             var url = data[i].url;
             var type = data[i].type;
