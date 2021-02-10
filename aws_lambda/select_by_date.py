@@ -1,11 +1,11 @@
 #built-in libraries
 import json
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
+from boto3.dynamodb.conditions import Attr
 from datetime import datetime, date, time, timedelta
 
 
-#return items from table by url 
+#return items from table by date 
 def select_items(table, count):
     now  = datetime.now()
     then = now - timedelta(days=count, minutes=now.minute, hours=now.hour)

@@ -1,12 +1,15 @@
 #built-in libraries
 import json
 import boto3
-from boto3.dynamodb.conditions import Attr
+from boto3.dynamodb.conditions import Key
 
 
 #return items from table with size in range
-def select_items(table, min_size, max_size):
-    fe = Attr('size').between(min_size, max_size)
+def select_items(table, key, body):
+    if (key == 'url'):
+        fe = Key('url').eq(body)
+    else:
+        fe = Key('type').eq(body)
     response = table.scan(
       FilterExpression=fe
     )
@@ -17,14 +20,13 @@ def select_items(table, min_size, max_size):
         return items
 
 def lambda_handler(event, context):
-    min_size = int(event['min'])
-    max_size = int(event['max'])
-    
+    key = event['key']
+    body = event['body']
     #init dynamodb table
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('img_table')
     
-    items = select_items(table, min_size, max_size)
+    items = select_items(table, key, body)
  
     return {
         "statusCode": 200,
