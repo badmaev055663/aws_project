@@ -1,5 +1,10 @@
 function img_process(image_url, filter)
 {
+    if (image_url.length == 0)
+    {
+        alert("empty url");
+        return;
+    }
     // сборка запроса
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");

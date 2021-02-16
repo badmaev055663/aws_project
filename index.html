@@ -57,7 +57,7 @@
     <form>
         <label for="search_url">show all images by url:</label>
         <input type="url" id="search_url">
-        <button type="button" onclick="search_by_key('url', document.getElementById('search_url').value)"> show </button>
+        <button type="button" onclick="search_by_url(document.getElementById('search_url').value)"> show </button>
     </form>
 
     <form>
@@ -70,13 +70,14 @@
             <option value="DETAIL"> detail </option>
         </select>
       
-        <button type="button" onclick="search_by_key('type', document.getElementById('search_filter').value)"> show </button>
+        <button type="button" onclick="select_by_filter(document.getElementById('search_filter').value)"> show </button>
     </form>
 
     <script src="script/img_process.js"></script>
     <script src="script/select_by_date.js"></script>
     <script src="script/select_by_size.js"></script>
-    <script src="script/search_by_key.js"></script>
+    <script src="script/search_by_url.js"></script>
+    <script src="script/select_by_filter.js"></script>
     <script src="script/delete_img.js"></script>
    
 </body>
