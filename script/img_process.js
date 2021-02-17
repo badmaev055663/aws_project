@@ -1,6 +1,6 @@
 function img_process(image_url, filter)
 {
-    if (image_url.length == 0)
+    if (image_url.length <= 1)
     {
         alert("empty url");
         return;
