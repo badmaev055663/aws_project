@@ -7,7 +7,11 @@ from boto3.dynamodb.conditions import Key
 #return items from table with size in range
 def select_items(table, url):
     response = table.query(
-      KeyConditionExpression=Key('url').eq(url)
+      KeyConditionExpression=Key('url').eq(url),
+      ProjectionExpression='#filter_type, upload_time, size',
+      ExpressionAttributeNames={
+        '#filter_type': 'type'
+      }
     )
     if (response['Count'] == 0):
         return 'None'

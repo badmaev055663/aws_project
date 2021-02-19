@@ -29,7 +29,12 @@ function select_by_date(count)
             var url = data[i].url;
             var type = data[i].type;
             var date = data[i].upload_time;
-            document.write('<tr style="border: 1px solid black;"><td style="border: 1px solid black;">'+ url +'</td><td style="border: 1px solid black;">'+ type +'</td><td style="border: 1px solid black;">'+ date +'</td></tr>');
+            var size = data[i].size;
+            document.write('<tr style="border: 1px solid black;"><td style="border: 1px solid black;">'
+                        + url +'</td><td style="border: 1px solid black;">'
+                        + type +'</td><td style="border: 1px solid black;">'
+                        + date +'</td><td style="border: 1px solid black;">'
+                        + size +'</td></tr>');
         }  
         document.write('</table>');  
     })

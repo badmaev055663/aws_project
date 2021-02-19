@@ -29,7 +29,10 @@ function select_by_filter(filter)
             var url = data[i].url;
             var date = data[i].upload_time;
             var size = data[i].size;
-            document.write('<tr style="border: 1px solid black;"><td style="border: 1px solid black;">'+ url +'</td><td style="border: 1px solid black;">'+ size +'</td><td style="border: 1px solid black;">'+ date +'</td></tr>');
+            document.write('<tr style="border: 1px solid black;"><td style="border: 1px solid black;">'
+                        + url +'</td><td style="border: 1px solid black;">'
+                        + size +'</td><td style="border: 1px solid black;">'
+                        + date +'</td></tr>');
         }  
         document.write('</table>');  
     })

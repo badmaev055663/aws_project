@@ -6,7 +6,11 @@ from boto3.dynamodb.conditions import Attr
 #return items from table by date 
 def select_items(table, type):
     response = table.scan(
-      FilterExpression= Attr('type').eq(type)
+      FilterExpression= Attr('type').eq(type),
+      ProjectionExpression='#src_url, upload_time, size',
+      ExpressionAttributeNames={
+        '#src_url': 'url'
+      }
     )
     if (response['Count'] == 0):
         return 'None'
