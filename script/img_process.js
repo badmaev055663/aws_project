@@ -25,7 +25,7 @@ function img_process(image_url, filter)
      
         if (data == 'url error')
         {
-            alert('invalid url');
+            alert('invalid url or access to source denied');
             return;
         }
         if (data == 'image error')

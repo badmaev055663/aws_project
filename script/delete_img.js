@@ -1,5 +1,10 @@
 function delete_img(image_url, filter)
 {
+    if (image_url.length <= 1)
+    {
+        alert("empty url");
+        return;
+    }
     // сборка запроса
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
